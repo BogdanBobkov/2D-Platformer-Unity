@@ -1,10 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Platformer.Common;
+using Platformer.GameManager;
+using Ui;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ExitTrigger : MonoBehaviour
 {
+    private IUiManager _uiManager;
+    private IGameManager _gameManager;
+    
+    private void Start()
+    {
+        _uiManager = ServiceLocator.Instance.Get<IUiManager>();
+        _gameManager = ServiceLocator.Instance.Get<IGameManager>();
+    }
+
     //public Animator anim;
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -19,10 +32,10 @@ public class ExitTrigger : MonoBehaviour
         //anim.SetTrigger("Exit");
         yield return new WaitForSeconds(0.1f);
 
-        UIManager.instance.fadeToBlack = true;
+        _uiManager.SetFadeToBlack(true);
 
         yield return new WaitForSeconds(2f);
         // Do something after flag anim
-        GameManager.instance.LevelComplete();
+        _gameManager.LevelComplete();
     }
 }

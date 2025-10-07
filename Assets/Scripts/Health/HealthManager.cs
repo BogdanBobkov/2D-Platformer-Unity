@@ -1,4 +1,3 @@
-using System.Linq;
 using Platformer.Common;
 using Platformer.GameManager;
 using Platformer.Health;
@@ -10,14 +9,10 @@ public class HealthManager : MonoBehaviour, IHealthManager
 {
     public GameObject damageEffect;
 
-    private int MaxHealth = 6;
-
     [SerializeField] private Image[] hearts;
     [SerializeField] private Sprite FullHeartSprite;
     [SerializeField] private Sprite HalfHeartSprite;
     [SerializeField] private Sprite EmptyHeartSprite;
-
-    private GameObject _player;
 
     private IHealthSystem _healthSystem;
     private IHealthVisual _healthVisual;
@@ -29,8 +24,6 @@ public class HealthManager : MonoBehaviour, IHealthManager
     {
         ServiceLocator.Instance.Set<IHealthManager>(this);
 
-        _gameManager = ServiceLocator.Instance.Get<IGameManager>();
-
         _healthSystem = new HealthSystem();
         _healthSystem.OnDeath += OnDeath;
         _healthSystem.OnHealthChanged += OnHealthChanged;
@@ -40,11 +33,10 @@ public class HealthManager : MonoBehaviour, IHealthManager
 
     private void Start()
     {
-        _player = FindObjectsOfType<MonoBehaviour>()
-            .FirstOrDefault(m => m is IPlayerController)
-            !.gameObject;
-
-        _healthVisual.UpdateVisual(_healthSystem.CurrentHealth, _player.transform.position);
+        _gameManager = ServiceLocator.Instance.Get<IGameManager>();
+        _playerController = ServiceLocator.Instance.Get<IPlayerController>();
+        
+        _healthVisual.UpdateVisual(_healthSystem.CurrentHealth, _playerController.GetPosition());
     }
 
     private void OnDestroy()
@@ -61,7 +53,7 @@ public class HealthManager : MonoBehaviour, IHealthManager
 
     private void OnHealthChanged(int currentHealth)
     {
-        _healthVisual.UpdateVisual(currentHealth, _player.transform.position);
+        _healthVisual.UpdateVisual(currentHealth, _playerController.GetPosition());
     }
 
     public void Damage()

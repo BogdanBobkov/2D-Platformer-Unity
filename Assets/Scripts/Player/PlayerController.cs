@@ -1,16 +1,13 @@
-
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using ControlsManager;
+using Platformer.Common;
+using Platformer.GameManager;
 using Player;
+using Ui;
 using UnityEngine;
-using UnityEngine.UI;
-
-public enum Controls { mobile,pc}
 
 public class PlayerController : MonoBehaviour, IPlayerController
 {
-
-
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
     public float doubleJumpForce = 8f;
@@ -24,7 +21,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public Animator playeranim;
 
     public Controls controlmode;
-   
+
 
     private float moveX;
     public bool isPaused = false;
@@ -36,29 +33,27 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private bool wasonGround;
 
 
-   // public GameObject projectile;
-   // public Transform firePoint;
+    // public GameObject projectile;
+    // public Transform firePoint;
 
     public float fireRate = 0.5f; // Time between each shot
     private float nextFireTime = 0f; // Time of the next allowed shot
 
-
-    
-
-
-
+    private IControlsManager _controlsManager;
+    private IGameManager _gameManager;
 
     private void Start()
     {
+        _controlsManager = ServiceLocator.Instance.Get<IControlsManager>();
+        _gameManager = ServiceLocator.Instance.Get<IGameManager>();
+        
         rb = GetComponent<Rigidbody2D>();
         footEmissions = footsteps.emission;
 
         if (controlmode == Controls.mobile)
         {
-            UIManager.instance.EnableMobileControls();
+            _controlsManager.EnableMobileControls();
         }
-
-
     }
 
     private void Update()
@@ -105,6 +100,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
                 nextFireTime = Time.time + 1f / fireRate; // Set the next allowed fire time
             }
         }
+
         SetAnimations();
 
         if (moveX != 0)
@@ -114,33 +110,35 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
         //impactEffect
 
-        if(!wasonGround && isGroundedBool)
+        if (!wasonGround && isGroundedBool)
         {
             ImpactEffect.gameObject.SetActive(true);
             ImpactEffect.Stop();
-            ImpactEffect.transform.position = new Vector2(footsteps.transform.position.x,footsteps.transform.position.y-0.2f);
+            ImpactEffect.transform.position =
+                new Vector2(footsteps.transform.position.x, footsteps.transform.position.y - 0.2f);
             ImpactEffect.Play();
         }
 
         wasonGround = isGroundedBool;
 
-        
+
     }
+
     public void SetAnimations()
     {
         if (moveX != 0 && isGroundedBool)
         {
             playeranim.SetBool("run", true);
-            footEmissions.rateOverTime= 35f;
+            footEmissions.rateOverTime = 35f;
         }
         else
         {
-            playeranim.SetBool("run",false);
+            playeranim.SetBool("run", false);
             footEmissions.rateOverTime = 0f;
         }
 
         playeranim.SetBool("isGrounded", isGroundedBool);
-       
+
     }
 
     private void FlipSprite(float direction)
@@ -156,6 +154,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
             transform.localScale = new Vector3(-1, 1, 1);
         }
     }
+
     private void FixedUpdate()
     {
         // Player movement
@@ -163,7 +162,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             moveX = Input.GetAxis("Horizontal");
         }
-       
+
 
 
         rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
@@ -183,14 +182,15 @@ public class PlayerController : MonoBehaviour, IPlayerController
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, groundLayer);
         return hit.collider != null;
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "killzone")
+        if (collision.gameObject.tag == "killzone")
         {
-            GameManager.instance.Death();
+            _gameManager.Death();
         }
     }
-    
+
 
 
 
@@ -219,6 +219,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         moveX = value;
     }
+
     public void MobileJump()
     {
         if (isGroundedBool)
@@ -252,4 +253,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
     }
 
+    public Vector3 GetPosition() => transform.position;
+    public void SetPosition(Vector3 position) => transform.position = position;
+    public GameObject GetGameObject() => gameObject;
 }

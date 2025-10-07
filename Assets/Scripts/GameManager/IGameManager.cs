@@ -1,11 +1,11 @@
+using Platformer.Pickup;
+
 namespace Platformer.GameManager
 {
     public interface IGameManager
     {
-        void IncrementCoinCount();
-        void IncrementGemCount();
+        void IncrementPickup(PickupBase pickup);
         void Death();
-        void FindTotalPickups();
         void LevelComplete();
     }
 }

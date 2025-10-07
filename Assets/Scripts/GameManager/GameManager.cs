@@ -1,8 +1,11 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using ControlsManager;
 using Platformer.Common;
 using Platformer.Pickup;
+using Player;
+using Ui;
 using UnityEngine.SceneManagement;
 
 namespace Platformer.GameManager
@@ -10,36 +13,39 @@ namespace Platformer.GameManager
     public class GameManager : MonoBehaviour, IGameManager
     {
         [SerializeField] private TMP_Text coinText;
-
-        [SerializeField] private PlayerController playerController;
-
-        private int coinCount = 0;
-        private int gemCount = 0;
-        private bool isGameOver = false;
-        private Vector3 playerPosition;
-
-        //Level Complete
-
         [SerializeField] GameObject levelCompletePanel;
         [SerializeField] TMP_Text leveCompletePanelTitle;
         [SerializeField] TMP_Text levelCompleteCoins;
 
-        private int totalCoins = 0;
+        private bool isGameOver;
+        private Vector3 playerPosition;
+
+        private IUiManager _uiManager;
+        private IControlsManager _controlsManager;
+        private IPlayerController _playerController;
+        private IPickupTracker _pickupTracker;
+        private IHudController _hudController;
 
         private void Awake()
         {
             Application.targetFrameRate = 60;
+
+            _hudController =
+                new HudController(coinText, levelCompletePanel, leveCompletePanelTitle, levelCompleteCoins);
+            _pickupTracker = new PickupTracker();
+            
+            ServiceLocator.Instance.Set<IGameManager>(this);
         }
 
         private void Start()
         {
             UpdateGUI();
-            UIManager.instance.fadeFromBlack = true;
-            playerPosition = playerController.transform.position;
-
-            FindTotalPickups();
-
-            ServiceLocator.Instance.Set<IGameManager>(this);
+            _uiManager.SetFadeFromBlack(true);
+            playerPosition = _playerController.GetPosition();
+            
+            _uiManager = ServiceLocator.Instance.Get<IUiManager>();
+            _controlsManager = ServiceLocator.Instance.Get<IControlsManager>();
+            _playerController = ServiceLocator.Instance.Get<IPlayerController>();
         }
 
         private void OnDestroy()
@@ -47,78 +53,39 @@ namespace Platformer.GameManager
             ServiceLocator.Instance.Remove<IGameManager>();
         }
 
-        public void IncrementCoinCount()
-        {
-            coinCount++;
-            UpdateGUI();
-        }
-
-        public void IncrementGemCount()
-        {
-            gemCount++;
-            UpdateGUI();
-        }
-
         private void UpdateGUI()
         {
-            coinText.text = coinCount.ToString();
+            _hudController.Update(_pickupTracker.GetTotalCount(typeof(CoinPickup)));
+        }
 
+        public void IncrementPickup(PickupBase pickup)
+        {
+            _pickupTracker.IncrementPickup(pickup);
+            UpdateGUI();
         }
 
         public void Death()
         {
             if (!isGameOver)
             {
-                // Disable Mobile Controls
-                UIManager.instance.DisableMobileControls();
-                // Initiate screen fade
-                UIManager.instance.fadeToBlack = true;
-
-                // Disable the player object
-                playerController.gameObject.SetActive(false);
-
-                // Start death coroutine to wait and then respawn the player
+                _controlsManager.DisableMobileControls();
+                _uiManager.SetFadeToBlack(true);
+                _playerController.GetGameObject().SetActive(false);
                 StartCoroutine(DeathCoroutine());
-
-                // Update game state
                 isGameOver = true;
-
-                // Log death message
-                Debug.Log("Died");
-            }
-        }
-
-        public void FindTotalPickups()
-        {
-            var pickups = FindObjectsOfType<PickupBase>();
-
-            foreach (var pickupObject in pickups)
-            {
-                if (pickupObject.GetType() == typeof(CoinPickup))
-                {
-                    totalCoins += 1;
-                }
             }
         }
 
         public void LevelComplete()
         {
-
-
-
-            levelCompletePanel.SetActive(true);
-            leveCompletePanelTitle.text = "LEVEL COMPLETE";
-
-
-
-            levelCompleteCoins.text = "COINS COLLECTED: " + coinCount.ToString() + " / " + totalCoins.ToString();
-
+            _hudController.SetLevelCompletedHud(_pickupTracker.GetTotalCount(typeof(CoinPickup)));
         }
 
         private IEnumerator DeathCoroutine()
         {
             yield return new WaitForSeconds(1f);
-            playerController.transform.position = playerPosition;
+
+            _playerController.SetPosition(playerPosition);
 
             // Wait for 2 seconds
             yield return new WaitForSeconds(1f);
@@ -127,8 +94,6 @@ namespace Platformer.GameManager
             if (isGameOver)
             {
                 SceneManager.LoadScene(1);
-
-
             }
         }
     }
