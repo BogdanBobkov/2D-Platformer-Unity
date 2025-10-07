@@ -2,12 +2,7 @@
 {
     public class MobileShootController : IShootController
     {
-        public bool IsTryToShoot()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Shoot(float nextFireTime)
+        public void Shoot()
         {
             throw new System.NotImplementedException();
         }

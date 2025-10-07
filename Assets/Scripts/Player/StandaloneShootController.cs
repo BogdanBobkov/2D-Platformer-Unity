@@ -13,14 +13,9 @@ namespace Player
             _fireRate = fireRate;
         }
 
-        public bool IsTryToShoot()
+        public void Shoot()
         {
-            return Input.GetButtonDown("Fire1");
-        }
-
-        public void Shoot(float nextFireTime)
-        {
-            if (Time.time >= nextFireTime)
+            if (Time.time >= _nextFireTime)
             {
                 //GameObject fireBall = Instantiate(projectile, firePoint.position, Quaternion.identity);
                 //fireBall.GetComponent<Rigidbody2D>().AddForce(firePoint.right * 500f);

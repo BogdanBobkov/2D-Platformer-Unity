@@ -1,18 +1,18 @@
 ﻿namespace Player
 {
-    public class MobileMoveController : IMoveController
+    public class MobileInputController : IInputController
     {
-        public void Jump(float jumpForce)
+        public float GetMoveAxis()
         {
             throw new System.NotImplementedException();
         }
 
-        public bool IsGrounded()
+        public bool GetJumpInput()
         {
             throw new System.NotImplementedException();
         }
 
-        public void Move(float moveX, float moveSpeed)
+        public bool GetShootInput()
         {
             throw new System.NotImplementedException();
         }

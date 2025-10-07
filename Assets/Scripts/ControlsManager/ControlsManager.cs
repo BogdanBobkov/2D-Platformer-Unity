@@ -1,5 +1,4 @@
-﻿using System;
-using Platformer.Common;
+﻿using Platformer.Common;
 using UnityEngine;
 
 namespace ControlsManager

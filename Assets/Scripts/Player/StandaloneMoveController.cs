@@ -14,20 +14,10 @@ namespace Player
             _layerGround = layerGround;
             _groundTransform = groundTransform;
         }
-        
-        public float GetMoveAxis()
-        {
-            return Input.GetAxis("Horizontal");
-        }
-
-        public bool IsJump()
-        {
-            return Input.GetButtonDown("Jump");
-        }
 
         public void Jump(float jumpForce)
         {
-            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 0); // Zero out vertical velocity
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 0);
             _rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
@@ -37,6 +27,11 @@ namespace Player
             Vector2 rayOrigin = new Vector2(_groundTransform.transform.position.x, _groundTransform.transform.position.y - 0.1f);
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, _layerGround);
             return hit.collider != null;
+        }
+
+        public void Move(float moveX, float moveSpeed)
+        {
+            _rigidbody2D.velocity = new Vector2(moveX * moveSpeed, _rigidbody2D.velocity.y);
         }
     }
 }

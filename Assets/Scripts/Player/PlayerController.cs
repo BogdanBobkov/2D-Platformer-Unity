@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private bool wasonGround;
 
     public float fireRate = 0.5f;
-    private float nextFireTime = 0f;
     private float moveX;
 
     private IControlsManager _controlsManager;
@@ -36,6 +35,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private IShootController _shootController;
     private IAnimationController _animationController;
     private IParticleController _particleController;
+    private IInputController _inputController;
 
     private void Awake()
     {
@@ -57,6 +57,10 @@ public class PlayerController : MonoBehaviour, IPlayerController
             ? new MobileShootController()
             : new StandaloneShootController(fireRate);
 
+        _inputController = _controlsManager.GetControlsType() == Controls.mobile
+            ? new MobileInputController()
+            : new StandaloneInputController();
+
         _animationController = new AnimationController(playeranim);
         _particleController = new ParticleController(footsteps, ImpactEffect);
     }
@@ -67,8 +71,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         if (isGroundedBool)
         {
             canDoubleJump = true;
-            moveX = _moveController.GetMoveAxis();
-            if (_moveController.IsJump())
+            moveX = _inputController.GetMoveAxis();
+            if (_inputController.GetJumpInput())
             {
                 _moveController.Jump(jumpForce);
                 _animationController.Jump();
@@ -76,7 +80,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
         else
         {
-            if (canDoubleJump && _moveController.IsJump())
+            if (canDoubleJump && _inputController.GetJumpInput())
             {
                 _moveController.Jump(doubleJumpForce);
                 _animationController.Jump();
@@ -86,10 +90,9 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
         if (!isPaused)
         {
-            if (_shootController.IsTryToShoot() && Time.time >= nextFireTime)
+            if (_inputController.GetShootInput())
             {
-                _shootController.Shoot(nextFireTime);
-                nextFireTime = Time.time + 1f / fireRate; // Set the next allowed fire time
+                _shootController.Shoot();
             }
         }
 
@@ -118,20 +121,18 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         if (direction > 0)
         {
-            // Moving right, flip sprite to the right
             transform.localScale = new Vector3(1, 1, 1);
         }
         else if (direction < 0)
         {
-            // Moving left, flip sprite to the left
             transform.localScale = new Vector3(-1, 1, 1);
         }
     }
 
     private void FixedUpdate()
     {
-        moveX = _moveController.GetMoveAxis();
-        rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
+        moveX = _inputController.GetMoveAxis();
+        _moveController.Move(moveX, moveSpeed);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -2,9 +2,8 @@
 {
     public interface IMoveController
     {
-        float GetMoveAxis();
-        bool IsJump();
         void Jump(float jumpForce);
         bool IsGrounded();
+        void Move(float moveX, float moveSpeed);
     }
 }
