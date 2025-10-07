@@ -7235,7 +7235,6 @@ MonoBehaviour:
     m_Bits: 1
   groundCheck: {fileID: 93182928}
   playeranim: {fileID: 1126557507}
-  controlmode: 1
   isPaused: 0
   footsteps: {fileID: 1671786042}
   ImpactEffect: {fileID: 51788896}
@@ -23195,7 +23194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 678074db48b44f939455701f081a9211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controls: 0
+  _controls: 1
   mobileControls: {fileID: 2107312980}
 --- !u!1001 &2111422984
 PrefabInstance:

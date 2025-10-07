@@ -39,13 +39,13 @@ namespace Platformer.GameManager
 
         private void Start()
         {
-            UpdateGUI();
-            _uiManager.SetFadeFromBlack(true);
-            playerPosition = _playerController.GetPosition();
-            
             _uiManager = ServiceLocator.Instance.Get<IUiManager>();
             _controlsManager = ServiceLocator.Instance.Get<IControlsManager>();
             _playerController = ServiceLocator.Instance.Get<IPlayerController>();
+            
+            UpdateGUI();
+            _uiManager.SetFadeFromBlack(true);
+            playerPosition = _playerController.GetPosition();
         }
 
         private void OnDestroy()
