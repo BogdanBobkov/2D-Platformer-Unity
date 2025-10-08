@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
+using Platformer.Common;
+using SceneController;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Events : MonoBehaviour
 {
+    private ISceneController _sceneController;
+
+    private void Start()
+    {
+        _sceneController = ServiceLocator.Instance.Get<ISceneController>();
+    }
+
     public void Menu()
     {
-        SceneManager.LoadScene(0);
+        _sceneController.LoadMenu();
     }
+
     public void Level()
     {
-        SceneManager.LoadScene(1);
+        _sceneController.LoadLevel();
     }
+
     public void Quit()
     {
         Application.Quit();

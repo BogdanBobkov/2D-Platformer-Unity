@@ -5,7 +5,6 @@ using Platformer.Common;
 using Platformer.GameManager;
 using Ui;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ExitTrigger : MonoBehaviour
 {

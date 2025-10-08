@@ -5,8 +5,8 @@ using ControlsManager;
 using Platformer.Common;
 using Platformer.Pickup;
 using Player;
+using SceneController;
 using Ui;
-using UnityEngine.SceneManagement;
 
 namespace Platformer.GameManager
 {
@@ -21,6 +21,7 @@ namespace Platformer.GameManager
         private Vector3 playerPosition;
 
         private IUiManager _uiManager;
+        private ISceneController _sceneController;
         private IControlsManager _controlsManager;
         private IPlayerController _playerController;
         private IPickupTracker _pickupTracker;
@@ -42,6 +43,7 @@ namespace Platformer.GameManager
             _uiManager = ServiceLocator.Instance.Get<IUiManager>();
             _controlsManager = ServiceLocator.Instance.Get<IControlsManager>();
             _playerController = ServiceLocator.Instance.Get<IPlayerController>();
+            _sceneController = ServiceLocator.Instance.Get<ISceneController>();
             
             UpdateGUI();
             _uiManager.SetFadeFromBlack(true);
@@ -93,7 +95,7 @@ namespace Platformer.GameManager
             // Check if the game is still over (in case player respawns earlier)
             if (isGameOver)
             {
-                SceneManager.LoadScene(1);
+                _sceneController.LoadLevel();
             }
         }
     }
