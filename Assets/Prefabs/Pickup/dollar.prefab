@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1257432869399111996}
   - component: {fileID: 6092229894679926228}
-  - component: {fileID: -7981618645009687228}
   - component: {fileID: 8577905970109917546}
+  - component: {fileID: 8012466685926969205}
   m_Layer: 0
   m_Name: dollar
   m_TagString: Coin
@@ -86,20 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-7981618645009687228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3658722155380845051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92818094d16fd38428ed5eff85cd1dd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pt: 0
-  PickupEffect: {fileID: 5746382810402386754, guid: ce32754ecbaea3342842e4a46df1e61a, type: 3}
 --- !u!61 &8577905970109917546
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -145,3 +131,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &8012466685926969205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3658722155380845051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3877f93c10147448a22bd4a6a5c6cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PickupEffect: {fileID: 3658722155380845051}
