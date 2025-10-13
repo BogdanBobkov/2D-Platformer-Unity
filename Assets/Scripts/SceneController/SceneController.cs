@@ -2,7 +2,7 @@ using Platformer.Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace SceneController
+namespace Platformer.SceneController
 {
     public class SceneController : MonoBehaviour, ISceneController
     {

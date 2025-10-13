@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Player
+namespace Platformer.Player
 {
     public class StandaloneShootController : IShootController
     {

@@ -1,4 +1,4 @@
-﻿namespace Player
+﻿namespace Platformer.Player
 {
     public class MobileMoveController : IMoveController
     {

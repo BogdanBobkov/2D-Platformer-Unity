@@ -1,28 +1,31 @@
 using Platformer.Common;
-using SceneController;
+using Platformer.SceneController;
 using UnityEngine;
 
-public class Events : MonoBehaviour
+namespace Platformer
 {
-    private ISceneController _sceneController;
-
-    private void Start()
+    public class Events : MonoBehaviour
     {
-        _sceneController = ServiceLocator.Instance.Get<ISceneController>();
-    }
+        private ISceneController _sceneController;
 
-    public void Menu()
-    {
-        _sceneController.LoadMenu();
-    }
+        private void Start()
+        {
+            _sceneController = ServiceLocator.Instance.Get<ISceneController>();
+        }
 
-    public void Level()
-    {
-        _sceneController.LoadLevel();
-    }
+        public void Menu()
+        {
+            _sceneController.LoadMenu();
+        }
 
-    public void Quit()
-    {
-        Application.Quit();
+        public void Level()
+        {
+            _sceneController.LoadLevel();
+        }
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
     }
 }

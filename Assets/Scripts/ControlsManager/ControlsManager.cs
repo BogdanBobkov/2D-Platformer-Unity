@@ -1,7 +1,7 @@
 ﻿using Platformer.Common;
 using UnityEngine;
 
-namespace ControlsManager
+namespace Platformer.ControlsManager
 {
     public class ControlsManager : MonoBehaviour, IControlsManager
     {

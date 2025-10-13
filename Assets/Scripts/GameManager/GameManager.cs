@@ -1,12 +1,12 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
-using ControlsManager;
 using Platformer.Common;
+using Platformer.ControlsManager;
 using Platformer.Pickup;
-using Player;
-using SceneController;
-using Ui;
+using Platformer.Player;
+using Platformer.SceneController;
+using Platformer.Ui;
 
 namespace Platformer.GameManager
 {

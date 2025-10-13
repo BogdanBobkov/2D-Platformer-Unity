@@ -1,4 +1,4 @@
-namespace SceneController
+namespace Platformer.SceneController
 {
     public interface ISceneController
     {

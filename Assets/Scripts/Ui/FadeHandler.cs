@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Ui
+namespace Platformer.Ui
 {
     public class FadeHandler : IFadeHandler
     {

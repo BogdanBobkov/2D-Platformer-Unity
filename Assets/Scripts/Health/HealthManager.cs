@@ -1,63 +1,65 @@
 using Platformer.Common;
 using Platformer.GameManager;
-using Platformer.Health;
-using Player;
+using Platformer.Player;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthManager : MonoBehaviour, IHealthManager
+namespace Platformer.Health
 {
-    public GameObject damageEffect;
-
-    [SerializeField] private Image[] hearts;
-    [SerializeField] private Sprite FullHeartSprite;
-    [SerializeField] private Sprite HalfHeartSprite;
-    [SerializeField] private Sprite EmptyHeartSprite;
-
-    private IHealthSystem _healthSystem;
-    private IHealthVisual _healthVisual;
-
-    private IGameManager _gameManager;
-    private IPlayerController _playerController;
-
-    private void Awake()
+    public class HealthManager : MonoBehaviour, IHealthManager
     {
-        ServiceLocator.Instance.Set<IHealthManager>(this);
+        public GameObject damageEffect;
 
-        _healthSystem = new HealthSystem();
-        _healthSystem.OnDeath += OnDeath;
-        _healthSystem.OnHealthChanged += OnHealthChanged;
+        [SerializeField] private Image[] hearts;
+        [SerializeField] private Sprite FullHeartSprite;
+        [SerializeField] private Sprite HalfHeartSprite;
+        [SerializeField] private Sprite EmptyHeartSprite;
 
-        _healthVisual = new HealthVisual(hearts, FullHeartSprite, HalfHeartSprite, EmptyHeartSprite, damageEffect);
-    }
+        private IHealthSystem _healthSystem;
+        private IHealthVisual _healthVisual;
 
-    private void Start()
-    {
-        _gameManager = ServiceLocator.Instance.Get<IGameManager>();
-        _playerController = ServiceLocator.Instance.Get<IPlayerController>();
-        
-        _healthVisual.UpdateVisual(_healthSystem.CurrentHealth, _playerController.GetPosition());
-    }
+        private IGameManager _gameManager;
+        private IPlayerController _playerController;
 
-    private void OnDestroy()
-    {
-        ServiceLocator.Instance.Remove<IHealthManager>();
-        _healthSystem.OnDeath -= OnDeath;
-        _healthSystem.OnHealthChanged -= OnHealthChanged;
-    }
+        private void Awake()
+        {
+            ServiceLocator.Instance.Set<IHealthManager>(this);
 
-    private void OnDeath()
-    {
-        _gameManager.Death();
-    }
+            _healthSystem = new HealthSystem();
+            _healthSystem.OnDeath += OnDeath;
+            _healthSystem.OnHealthChanged += OnHealthChanged;
 
-    private void OnHealthChanged(int currentHealth)
-    {
-        _healthVisual.UpdateVisual(currentHealth, _playerController.GetPosition());
-    }
+            _healthVisual = new HealthVisual(hearts, FullHeartSprite, HalfHeartSprite, EmptyHeartSprite, damageEffect);
+        }
 
-    public void Damage()
-    {
-        _healthSystem.Damage();
+        private void Start()
+        {
+            _gameManager = ServiceLocator.Instance.Get<IGameManager>();
+            _playerController = ServiceLocator.Instance.Get<IPlayerController>();
+
+            _healthVisual.UpdateVisual(_healthSystem.CurrentHealth, _playerController.GetPosition());
+        }
+
+        private void OnDestroy()
+        {
+            ServiceLocator.Instance.Remove<IHealthManager>();
+            _healthSystem.OnDeath -= OnDeath;
+            _healthSystem.OnHealthChanged -= OnHealthChanged;
+        }
+
+        private void OnDeath()
+        {
+            _gameManager.Death();
+        }
+
+        private void OnHealthChanged(int currentHealth)
+        {
+            _healthVisual.UpdateVisual(currentHealth, _playerController.GetPosition());
+        }
+
+        public void Damage()
+        {
+            _healthSystem.Damage();
+        }
     }
 }

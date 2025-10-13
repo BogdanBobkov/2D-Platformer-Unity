@@ -1,40 +1,41 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Platformer.Common;
 using Platformer.GameManager;
-using Ui;
+using Platformer.Ui;
 using UnityEngine;
 
-public class ExitTrigger : MonoBehaviour
+namespace Platformer
 {
-    private IUiManager _uiManager;
-    private IGameManager _gameManager;
-    
-    private void Start()
+    public class ExitTrigger : MonoBehaviour
     {
-        _uiManager = ServiceLocator.Instance.Get<IUiManager>();
-        _gameManager = ServiceLocator.Instance.Get<IGameManager>();
-    }
+        private IUiManager _uiManager;
+        private IGameManager _gameManager;
 
-    //public Animator anim;
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
+        private void Start()
         {
-            StartCoroutine("LevelExit");
+            _uiManager = ServiceLocator.Instance.Get<IUiManager>();
+            _gameManager = ServiceLocator.Instance.Get<IGameManager>();
         }
-    }
 
-    IEnumerator LevelExit()
-    {
-        //anim.SetTrigger("Exit");
-        yield return new WaitForSeconds(0.1f);
+        //public Animator anim;
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.tag == "Player")
+            {
+                StartCoroutine("LevelExit");
+            }
+        }
 
-        _uiManager.SetFadeToBlack(true);
+        IEnumerator LevelExit()
+        {
+            //anim.SetTrigger("Exit");
+            yield return new WaitForSeconds(0.1f);
 
-        yield return new WaitForSeconds(2f);
-        // Do something after flag anim
-        _gameManager.LevelComplete();
+            _uiManager.SetFadeToBlack(true);
+
+            yield return new WaitForSeconds(2f);
+            // Do something after flag anim
+            _gameManager.LevelComplete();
+        }
     }
 }

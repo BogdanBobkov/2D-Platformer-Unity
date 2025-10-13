@@ -1,40 +1,41 @@
 using Platformer.Common;
-using Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour, IUiManager
+namespace Platformer.Ui
 {
-    public bool fadeToBlack, fadeFromBlack;
-    public Image blackScreen;
-    public float fadeSpeed = 2f;
-
-    private IFadeHandler _fadeHandler;
-
-    private void Awake()
+    public class UIManager : MonoBehaviour, IUiManager
     {
-        ServiceLocator.Instance.Set<IUiManager>(this);
-        _fadeHandler = new FadeHandler(fadeToBlack, fadeFromBlack, blackScreen, fadeSpeed);
-    }
+        public bool fadeToBlack, fadeFromBlack;
+        public Image blackScreen;
+        public float fadeSpeed = 2f;
 
-    private void Update()
-    {
-        _fadeHandler.Update();
-    }
+        private IFadeHandler _fadeHandler;
 
-    public void SetFadeToBlack(bool state)
-    {
-        _fadeHandler.SetFadeToBlack(state);
-    }
+        private void Awake()
+        {
+            ServiceLocator.Instance.Set<IUiManager>(this);
+            _fadeHandler = new FadeHandler(fadeToBlack, fadeFromBlack, blackScreen, fadeSpeed);
+        }
 
-    public void SetFadeFromBlack(bool state)
-    {
-        _fadeHandler.SetFadeFromBlack(state);
-    }
+        private void Update()
+        {
+            _fadeHandler.Update();
+        }
 
-    private void OnDestroy()
-    {
-        ServiceLocator.Instance.Remove<IUiManager>();
+        public void SetFadeToBlack(bool state)
+        {
+            _fadeHandler.SetFadeToBlack(state);
+        }
+
+        public void SetFadeFromBlack(bool state)
+        {
+            _fadeHandler.SetFadeFromBlack(state);
+        }
+
+        private void OnDestroy()
+        {
+            ServiceLocator.Instance.Remove<IUiManager>();
+        }
     }
-    
 }

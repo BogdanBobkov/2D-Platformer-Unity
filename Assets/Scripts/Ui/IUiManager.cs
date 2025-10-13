@@ -1,4 +1,4 @@
-﻿namespace Ui
+﻿namespace Platformer.Ui
 {
     public interface IUiManager
     {
