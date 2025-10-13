@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Platformer.Common;
+using UnityEngine;
 
 namespace Platformer.Player
 {
@@ -13,20 +14,13 @@ namespace Platformer.Player
         
         public void Update(float moveX, bool isGroundedBool)
         {
-            if (moveX != 0 && isGroundedBool)
-            {
-                _animator.SetBool("run", true);
-            }
-            else
-            {
-                _animator.SetBool("run", false);
-            }
-            _animator.SetBool("isGrounded", isGroundedBool);
+            _animator.SetBool(AnimationConstants.RunAnimationKey, moveX != 0 && isGroundedBool);
+            _animator.SetBool(AnimationConstants.IsGroundedAnimationKey, isGroundedBool);
         }
 
         public void Jump()
         {
-            _animator.SetTrigger("jump");
+            _animator.SetTrigger(AnimationConstants.JumpAnimationKey);
         }
     }
 }

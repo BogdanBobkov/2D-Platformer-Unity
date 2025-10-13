@@ -17,24 +17,19 @@ namespace Platformer
             _gameManager = ServiceLocator.Instance.Get<IGameManager>();
         }
 
-        //public Animator anim;
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.CompareTag(TagConstants.PlayerTag))
             {
-                StartCoroutine("LevelExit");
+                StartCoroutine(nameof(LevelExit));
             }
         }
 
-        IEnumerator LevelExit()
+        private IEnumerator LevelExit()
         {
-            //anim.SetTrigger("Exit");
             yield return new WaitForSeconds(0.1f);
-
             _uiManager.SetFadeToBlack(true);
-
             yield return new WaitForSeconds(2f);
-            // Do something after flag anim
             _gameManager.LevelComplete();
         }
     }

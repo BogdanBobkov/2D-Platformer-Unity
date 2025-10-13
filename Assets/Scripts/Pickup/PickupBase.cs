@@ -1,3 +1,4 @@
+using Platformer.Common;
 using UnityEngine;
 
 namespace Platformer.Pickup
@@ -8,7 +9,7 @@ namespace Platformer.Pickup
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("Player"))
+            if (collision.gameObject.CompareTag(TagConstants.PlayerTag))
             {
                 OnTriggerEnterHandler();
             }

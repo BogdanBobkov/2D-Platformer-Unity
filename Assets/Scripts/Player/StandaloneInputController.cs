@@ -4,19 +4,23 @@ namespace Platformer.Player
 {
     public class StandaloneInputController : IInputController
     {
+        private const string HorizontalButtonName = "Horizontal";
+        private const string JumpButtonName = "Jump";
+        private const string FireButtonName = "Fire1";
+        
         public float GetMoveAxis()
         {
-            return Input.GetAxis("Horizontal");
+            return Input.GetAxis(HorizontalButtonName);
         }
 
         public bool GetJumpInput()
         {
-            return Input.GetButtonDown("Jump");
+            return Input.GetButtonDown(JumpButtonName);
         }
         
         public bool GetShootInput()
         {
-            return Input.GetButtonDown("Fire1");
+            return Input.GetButtonDown(FireButtonName);
         }
     }
 }

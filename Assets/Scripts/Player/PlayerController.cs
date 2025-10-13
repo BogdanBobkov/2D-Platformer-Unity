@@ -138,7 +138,7 @@ namespace Platformer.Player
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.CompareTag("killzone"))
+            if (collision.gameObject.CompareTag(TagConstants.Killzone))
             {
                 _gameManager.Death();
             }
