@@ -10,6 +10,8 @@ namespace Platformer.GameManager
         
         public void IncrementPickup(PickupBase pickupBase)
         {
+            var type = pickupBase.GetType();
+            _pickups.TryAdd(type, 0);
             _pickups[pickupBase.GetType()]++;
         }
 

@@ -3,16 +3,8 @@ using UnityEngine;
 
 namespace ControlsManager
 {
-    public enum Controls
-    {
-        mobile,
-        pc
-    }
-
     public class ControlsManager : MonoBehaviour, IControlsManager
     {
-        [SerializeField] private Controls _controls;
-
         public GameObject mobileControls;
 
         private void Awake()
@@ -34,7 +26,5 @@ namespace ControlsManager
         {
             mobileControls.SetActive(true);
         }
-
-        public Controls GetControlsType() => _controls;
     }
 }

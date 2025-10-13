@@ -49,15 +49,15 @@ public class PlayerController : MonoBehaviour, IPlayerController
         
         ServiceLocator.Instance.Set<IPlayerController>(this);
 
-        _moveController = _controlsManager.GetControlsType() == Controls.mobile
+        _moveController = Application.isMobilePlatform
             ? new MobileMoveController()
             : new StandaloneMoveController(rb, groundLayer, groundCheck);
 
-        _shootController = _controlsManager.GetControlsType() == Controls.mobile
+        _shootController = Application.isMobilePlatform
             ? new MobileShootController()
             : new StandaloneShootController(fireRate);
 
-        _inputController = _controlsManager.GetControlsType() == Controls.mobile
+        _inputController = Application.isMobilePlatform
             ? new MobileInputController()
             : new StandaloneInputController();
 

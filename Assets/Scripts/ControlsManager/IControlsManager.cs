@@ -4,6 +4,5 @@
     {
         void DisableMobileControls();
         void EnableMobileControls();
-        Controls GetControlsType();
     }
 }
